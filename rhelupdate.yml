@@ -3,12 +3,13 @@
   hosts: "{{ survey_hostname }}"
 
   tasks:
+    
+    - name: Verify that host is registered to Satellite
+      ansible.builtin.command: subscription-manager identity
+      register: submgr_results
+
     - name: Block to update and reboot if server registed to Satellite
       block: 
-        - name: Verify that host is registered to Satellite
-          ansible.builtin.command: subscription-manager identity
-          register: submgr_results
-
         - name: Update the OS with latest patches
           ansible.builtin.yum:
             name: '*'
@@ -23,4 +24,4 @@
           ansible.builtin.reboot:
           when: "'Reboot is required' in reboot_result.stdout"
 
-      when: submgr_results.rc = 0
+      when: submgr_results is successful
