@@ -1,43 +1,29 @@
 linux-demos-no Project
 =========
 
-A brief description of the project linux-demos-no goes here.
+Contains various playbooks to manage linux hosts.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the project should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+leapp.yml and rhelupdate.yml assume that the host is registered to Satellite server.
+register_to_sat.yml can be used for the initial registering of a host to Satellite.
 
-linux-demos-no Variables
+Variables
 --------------
 
-A description of the settable variables for this project should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+survey_hostname is provided in AAP as the host you want to run the playbook against.
+
+sat_register_vars.yml uses a vars file vars/sat_register_vars.yml which contains the activation key defined in satellite and its curl command needed to register the host ie: RHEL7_AK: "curl command"
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+The project uses collections:
+ - ansible.builtin
 
 linux-demos-no Project Playbook
 ----------------
-
-Including an example of how to use your project (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - name: Project linux-demos-no
-      hosts: all
-      gather_facts: no
-    
-      tasks:
-     - name: some role
-        include_role:
-          name: some role
-          apply:
-            tags:
-              - some tag
-        vars:
-          # add variables if needed else delete entire section
-        tags:
-          - always
 
 License
 -------
