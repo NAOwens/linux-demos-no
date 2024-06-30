@@ -1,10 +1,10 @@
 ---
 - name: Register host to satellite 
-  hosts: rhel79.ofam.dev
+  hosts: "{{ survey_hostname }}"
   become: yes
   vars_files:
     - vars/sat_register_vars.yml
 
   tasks:
     - name: Register the host to satellite with the correct AK
-      ansible.builtin.shell: "{{ RHEL7_AK }}"  
+      ansible.builtin.shell: "{{ survey_ak }}"  
