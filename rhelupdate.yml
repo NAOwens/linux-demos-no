@@ -1,19 +1,26 @@
 ---
 - name: Upgrade RHEL Servers
-  hosts: rhel79.ofam.dev
-  become: yes
+  hosts: "{{ survey_hostname }}"
 
   tasks:
-    - name: Update the OS with latest patches
-      ansible.builtin.yum:
-        name: '*'
-        state: latest
+    - name: Block to update and reboot if server registed to Satellite
+      block: 
+        - name: Verify that host is registered to Satellite
+          ansible.builtin.command: subscription-manager identity
+          register: submgr_results
 
-    - name: Check if host needs rebooting
-      ansible.builtin.command: needs-restarting -r
-      register: reboot_result
-      changed_when: false
+        - name: Update the OS with latest patches
+          ansible.builtin.yum:
+            name: '*'
+            state: latest
 
-    - name: Reboot the server to complete the upgrade
-      ansible.builtin.reboot:
-      when: "'Reboot is required' in reboot_result.stdout"
+        - name: Check if host needs rebooting
+          ansible.builtin.command: needs-restarting -r
+          register: reboot_result
+          changed_when: false
+
+        - name: Reboot the server to complete the upgrade
+          ansible.builtin.reboot:
+          when: "'Reboot is required' in reboot_result.stdout"
+
+      when: submgr_results is successful
