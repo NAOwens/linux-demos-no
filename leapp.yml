@@ -1,0 +1,40 @@
+---
+- name: Perform Leapp upgrade on rhel host
+  hosts: rhel79.ofam.dev
+  become: yes
+
+  vars:
+    sat_org: My_Organization
+    leapp_ak: RHEL{{ ansible_distribution_major_version }}_LEAPP_AK
+    final_ak: RHEL{{ ansible_distribution_major_version|int + 1 }}_LEAPP_AK
+
+  tasks:
+    - name: Register the host with the proper LEAPP Activation Key
+      ansible.builtin.command: "subscription-manager register --org={{ sat_org }} --activationkey={{ leapp_ak }} --force"
+
+    - name: Ensure Leapp is installed
+      ansible.builtin.yum:
+        name: leapp
+        state: present
+
+    - name: Include Leapp{{ ansible_distribution_major_version }} Inhibitor
+      ansible.builtin.include_tasks: "tasks/leapp{{ ansible_distribution_major_version  }}_inhibitor_task.yml"
+
+    - name: Run the leapp preupgrade
+      ansible.builtin.command: leapp preupgrade
+      changed_when: false
+      register: preupgrade_result
+
+    - name: Run the leapp upgrade
+      ansible.builtin.command: leapp upgrade
+      register: upgrade_result
+
+    - name: Reboot the server to complete the upgrade
+      ansible.builtin.reboot:
+
+    - name: Register the host with the proper LEAPP Activation Key
+      ansible.builtin.command: "subscription-manager register --org={{ sat_org }} --activationkey={{ final_ak }} --force"
+      register: final_boot
+      until: final_boot.rc == 0
+      retries: 10
+      delay: 60

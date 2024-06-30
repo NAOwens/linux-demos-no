@@ -1,0 +1,20 @@
+---
+- name: Modify leapp file to avoid inhibitor
+  ansible.builtin.lineinfile:
+    path: /etc/leapp/files/device_driver_deprecation_data.json
+    search_string: '"device_id": "x86_64:intel:6:[168-255]",'
+    line: '      "device_id": "x86_64:intel:6:[190-255]",'
+    state: present
+    backup: true
+
+- name: Remove rhel7 pata_acpi kernel driver to avoid inhibitor
+  ansible.builtin.command: "modprobe -r pata_acpi"
+  changed_when: false
+
+- name: Create leapp answerfile remove_pam_pkcs11 entry to avoid inhibitor
+  ansible.builtin.template:
+    src: answerfile.j2
+    dest: /var/log/leapp/answerfile
+    owner: root                                                           
+    group: root                                                           
+    mode: '0644'
