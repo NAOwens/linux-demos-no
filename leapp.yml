@@ -1,6 +1,6 @@
 ---
 - name: Perform Leapp upgrade on rhel host
-  hosts: {{ survey_hostname }}
+  hosts: "{{ survey_hostname }}"
 
   vars:
     sat_org: My_Organization
