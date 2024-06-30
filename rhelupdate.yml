@@ -1,5 +1,5 @@
 ---
-- name: Upgrade RHEL Servers
+- name: Update RHEL Servers
   hosts: "{{ survey_hostname }}"
 
   tasks:
@@ -23,4 +23,4 @@
           ansible.builtin.reboot:
           when: "'Reboot is required' in reboot_result.stdout"
 
-      when: submgr_results is successful
+      when: "submgr_results is successful"
