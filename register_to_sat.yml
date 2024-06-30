@@ -7,4 +7,4 @@
 
   tasks:
     - name: Register the host to satellite with the correct AK
-      ansible.builtin.shell: "{{ survey_ak }}"  
+      ansible.builtin.shell: "{{ RHEL7_AK }}"  
