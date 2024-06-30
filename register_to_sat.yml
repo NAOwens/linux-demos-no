@@ -1,7 +1,7 @@
 ---
 - name: Register host to satellite 
   hosts: "{{ survey_hostname }}"
-  become: yes
+  
   vars_files:
     - vars/sat_register_vars.yml
 
