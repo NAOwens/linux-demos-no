@@ -1,6 +1,7 @@
 ---
 - name: Install and Setup Image Builder on-prem
   hosts: "{{ survey_hostname }}"
+  gather_facts: false
   
   tasks:
     - name: Create weldr group
@@ -19,7 +20,7 @@
         state: latest
     
     - name: Enable auto-complete
-      ansible.builtin.command: source /etc/bash_completion.d/composer-cli
+      ansible.builtin.command: "source /etc/bash_completion.d/composer-cli"
 
     - name: Enable and start image builder socket
       ansible.builtin.systemd:
