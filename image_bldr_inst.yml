@@ -1,5 +1,5 @@
 ---
-- name: Install Image Builder
+- name: Install and Setup Image Builder on-prem
   hosts: "{{ survey_hostname }}"
   
   tasks:
