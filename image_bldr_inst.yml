@@ -20,7 +20,7 @@
         state: latest
     
     - name: Enable auto-complete
-      ansible.builtin.command: "source /etc/bash_completion.d/composer-cli"
+      ansible.builtin.shell: "source /etc/bash_completion.d/composer-cli"
 
     - name: Enable and start image builder socket
       ansible.builtin.systemd:
