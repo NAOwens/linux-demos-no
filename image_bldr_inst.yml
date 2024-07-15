@@ -1,0 +1,34 @@
+---
+- name: Install Image Builder
+  hosts: "{{ survey_hostname }}"
+  
+  tasks:
+    - name: Create weldr group
+      ansible.builtin.group:
+        name: weldr
+        state: present
+
+    - name: Install packages needed for Image Builder server
+      ansible.builtin.dnf:
+        name: 
+          - osbuild-composer
+          - composer-cli
+          - cockpit-composer
+          - openscap-scanner
+          - scap-security-guide
+        state: latest
+    
+    - name: Enable auto-complete
+      ansible.builtin.command: source /etc/bash_completion.d/composer-cli
+
+    - name: Enable and start image builder socket
+      ansible.builtin.systemd:
+        name: osbuild-composer.socket
+        state: started
+        enabled: true
+
+    - name: Enable and start web console
+      ansible.builtin.systemd:
+        name: cockpit.socket
+        state: started
+        enabled: true
