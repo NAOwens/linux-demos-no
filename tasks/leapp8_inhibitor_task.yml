@@ -7,10 +7,14 @@
     state: present
     backup: true
 
-- name: Create leapp answerfile remove_pam_pkcs11 entry to avoid inhibitor
-  ansible.builtin.template:
-    src: answerfile.j2
-    dest: /var/log/leapp/answerfile
-    owner: root                                                           
-    group: root                                                           
-    mode: '0644'
+- name: Disable ssh root login
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^PermitRootLogin yes'
+    line: '#PermitRootLogin yes'
+
+- name: Disable AllowZoneDrifting
+  ansible.builtin.lineinfile:
+    path: /etc/firewalld/firewalld.conf
+    regexp: '^AllowZoneDrifting=yes'
+    line: 'AllowZoneDrifting=no'
