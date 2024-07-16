@@ -2,11 +2,16 @@
 - name: Perform Leapp upgrade on rhel host
   hosts: "{{ survey_hostname }}"
 
-  vars:
-    sat_org: My_Organization
-    leapp_ak: RHEL{{ ansible_distribution_major_version }}_LEAPP_AK
+  vars_files:
+    - vars/rhel{{ ansible_distribution_major_version }}_leapp_vars.yml
 
   tasks:
+    - name: Fail when OS not RHEL7 or RHEL8
+      ansible.builtin.fail
+        msg: The automated LEAPP upgrade only supports RHEL7 or RHEL8 upgrades
+      when: 
+ .      ( ansible_distribution_major_version != 7 or ansible_distribution_major_version != 8 )
+
     - name: Register the host with the proper LEAPP Activation Key
       ansible.builtin.command: "subscription-manager register --org={{ sat_org }} --activationkey={{ leapp_ak }} --force"
 
