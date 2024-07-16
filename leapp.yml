@@ -11,8 +11,9 @@
 
     - name: Ensure Leapp is installed
       ansible.builtin.yum:
-        name: leapp
+        name: "{{ item }}"
         state: present
+      loop: "{{ inst_pkgs }}"
 
     - name: Include Leapp{{ ansible_distribution_major_version }} Inhibitor
       ansible.builtin.include_tasks: "tasks/leapp{{ ansible_distribution_major_version  }}_inhibitor_task.yml"
