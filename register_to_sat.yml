@@ -6,6 +6,8 @@
     - vars/sat_rhel{{ ansible_distribution_major_version }}_reg_vars.yml
 
   handlers:
+    - name: unregister to insights
+      ansible.builtin.command: "insights-client --unregister"
     - name: register to insights
       ansible.builtin.command: "insights-client --register"
 
@@ -21,6 +23,7 @@
       ignore_errors: true
       when: chk_config is succeeded
       notify:
+        - unregister to insights
         - register to insights
 
     - name: If this host has not been registered to Sat then use curl command for first registration
