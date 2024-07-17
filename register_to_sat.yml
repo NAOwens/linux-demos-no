@@ -5,17 +5,23 @@
   vars_files:
     - vars/sat_rhel{{ ansible_distribution_major_version }}_reg_vars.yml
 
+  handlers:
+    - name: register to insights
+      ansible.builtin.command: "insights-client --register"
+
   tasks:
     - name: Check if this host has been registered to Sat previously
       ansible.builtin.command: "subscription-manager config"
       register: chk_config
       ignore_errors: true
       changed_when: false
-
+      
     - name: If this host has been registered to Sat previously register with proper RHEL_AK
       ansible.builtin.command: "subscription-manager register --org={{ sat_org }} --activationkey={{ rhel_ak }} --force"
       ignore_errors: true
       when: chk_config is succeeded
+      notify:
+        - register to insights
 
     - name: If this host has not been registered to Sat then use curl command for first registration
       ansible.builtin.shell: "{{ first_ak }}"  
