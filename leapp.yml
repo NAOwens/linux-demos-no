@@ -34,5 +34,5 @@
       ansible.builtin.command: leapp upgrade
       register: upgrade_result
 
-    - name: Reboot the server to complete the upgrade
-      ansible.builtin.reboot:
+    #- name: Reboot the server to complete the upgrade
+    #  ansible.builtin.reboot:
