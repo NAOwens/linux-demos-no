@@ -2,5 +2,4 @@
 leapp_ak: RHEL8_LEAPP_AK
 
 inst_pkgs:
-  - leapp
-  - leapp-upgrade-el8toel9
+  - leapp-upgrade
