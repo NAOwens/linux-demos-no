@@ -22,8 +22,15 @@ Dependencies
 The project uses collections:
  - ansible.builtin
 
-linux-demos-no Project Playbook
+Project Playbooks
 ----------------
+leapp.yml - used to do leapp upgrade from rhel7-to-rhel8 or rhel8-to-rhel9
+
+register_to_sat.yml - used to register host to satellite if new build or if snapshot restored and host needs to be re-registered to satellite
+
+image_bldr_inst.yml - used to install on-prem image builder
+
+rhelupdate.yml - update rhel minor version
 
 License
 -------
@@ -33,4 +40,4 @@ GPL
 Author Information
 ------------------
 
-An optional section for the project authors to include contact information, or a website (HTML is not allowed).
+Norman Owens
