@@ -30,9 +30,19 @@
       changed_when: false
       register: preupgrade_result
 
-#    - name: Run the leapp upgrade
-#      ansible.builtin.command: leapp upgrade
-#      register: upgrade_result
+    - name: Workaround for bug on UEFI systems RHEL-40362 affecting upgrades to 9.4.z and 9.5
+      ansible.builtin.copy:
+        src: /boot/efi/EFI/redhat/grub.cfg
+        dest: /boot/grub2/
+        owner: root
+        group: root
+        mode: '0700'
+      when:
+        - ansible_facts['distribution_major_version'] != "8"
 
-#    - name: Reboot the server to complete the upgrade
-#      ansible.builtin.reboot:
+    - name: Run the leapp upgrade
+      ansible.builtin.command: leapp upgrade
+      register: upgrade_result
+
+    - name: Reboot the server to complete the upgrade
+      ansible.builtin.reboot:
