@@ -38,7 +38,7 @@
         group: root
         mode: '0700'
       when:
-        - ansible_facts['distribution_major_version'] != "8"
+        - ansible_facts['distribution_major_version'] = "8"
 
     - name: Run the leapp upgrade
       ansible.builtin.command: leapp upgrade
