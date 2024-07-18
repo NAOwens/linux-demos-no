@@ -32,8 +32,9 @@
 
     - name: Workaround for bug on UEFI systems RHEL-40362 affecting upgrades to 9.4.z and 9.5
       ansible.builtin.copy:
-        remote_src: /boot/efi/EFI/redhat/grub.cfg
+        src: /boot/efi/EFI/redhat/grub.cfg
         dest: /boot/grub2/
+        remote_src: yes
         owner: root
         group: root
         mode: '0700'
