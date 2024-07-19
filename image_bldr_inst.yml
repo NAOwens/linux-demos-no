@@ -21,6 +21,7 @@
     
     - name: Enable auto-complete
       ansible.builtin.shell: "source /etc/bash_completion.d/composer-cli"
+      changed_when: false
 
     - name: Create repo directory for using Satellite CV as content source
       ansible.builtin.file:
