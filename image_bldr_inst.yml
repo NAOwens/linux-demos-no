@@ -1,7 +1,7 @@
 ---
 - name: Install and Setup Image Builder on-prem
   hosts: "{{ survey_hostname }}"
-  gather_facts: false
+  gather_facts: true
   
   tasks:
     - name: Create weldr group
@@ -21,6 +21,33 @@
     
     - name: Enable auto-complete
       ansible.builtin.shell: "source /etc/bash_completion.d/composer-cli"
+
+    - name: Create repo directory for using Satellite CV as content source
+      ansible.builtin.file:
+        path: /etc/osbuild-composer/repositories
+        state: directory
+        mode: '0755'
+        owner: root 
+        group: root
+
+    - name: Copy the hard-coded repos 
+      ansible.builtin.copy:
+        src: /usr/share/osbuild-composer/repositories/
+        dest: /etc/osbuild-composer/repositories
+        remote_src: true   
+
+    - name: Get YourEnv and YourCV 
+      ansible.builtin.shell: "subscription-manager identity | grep 'environment name:' | awk '{print $3}'"
+      register: sub_identity
+      changed_when: false
+
+    - name: Set fact with YourEnv and YourCV
+      ansible.builtin.set_fact:
+        my_var: "{{ sub_identity.stdout }}"
+
+    - name: Replace cdn.redhat.com with satellite server
+      ansible.builtin.shell: "sed -i -e 's|cdn.redhat.com|{{ sat_svr }}/pulp/content/{{ my_org }}/{{ my_var }}|' /etc/osbuild-composer/repositories/*.json"
+      changed_when: false
 
     - name: Enable and start image builder socket
       ansible.builtin.systemd:
