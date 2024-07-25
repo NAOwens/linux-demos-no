@@ -82,7 +82,7 @@
         state: started
         enabled: true
 
-    - name: Toml file used for blueprint
+    - name: Add Toml file used for blueprint to tmp dir
       ansible.builtin.template:
         src: baseos.toml.j2
         dest: /tmp/baseos.toml
@@ -91,7 +91,7 @@
       ansible.builtin.command: "composer-cli blueprints push /tmp/baseos.toml"
       changed_when: false
 
-    - name: Remove the blueprint tmp file
+    - name: Remove the blueprint Toml tmp file
       ansible.builtin.file:
         path: /tmp/baseos.toml
         state: absent 
