@@ -47,7 +47,7 @@
         my_var: "{{ sub_identity.stdout }}"
 
     - name: Replace cdn.redhat.com with satellite server
-      ansible.builtin.shell: "sed -i -e 's|cdn.redhat.com|satellite6.example.com/pulp/content/{{ sat_org }}/{{ my_var }}|' /etc/osbuild-composer/repositories/*.json"
+      ansible.builtin.shell: "sed -i -e 's|cdn.redhat.com|{{ survey_sat_svr }}/pulp/content/{{ sat_org }}/{{ my_var }}|' /etc/osbuild-composer/repositories/*.json"
       changed_when: false
 
     - name: "Replace {{ ansible_distribution_version }} with {{ ansible_distribution_major_version }} in rhel-{{ ansible_distribution_version }}.json"
