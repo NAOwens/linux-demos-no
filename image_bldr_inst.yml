@@ -2,7 +2,10 @@
 - name: Install and Setup Image Builder on-prem
   hosts: "{{ survey_hostname }}"
   gather_facts: true
-  
+
+  vars_files:
+    - vars/baseos_user.yml
+
   tasks:
     - name: Create weldr group
       ansible.builtin.group:
@@ -65,3 +68,12 @@
         name: cockpit.socket
         state: started
         enabled: true
+
+    - name: Toml file used for blueprint
+      ansible.builtin.template:
+        src: baseos.toml.j2
+        dest: /tmp/baseos.toml
+
+    - name: Create blueprint
+      ansible.builtin.command: "composer-cli blueprints push /tmp/baseos.toml"
+      changed_when: false

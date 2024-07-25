@@ -1,0 +1,28 @@
+name = "baseos"
+description = "used to create VMs Image"
+version = "0.0.1"
+modules = []
+groups = []
+distro = ""
+
+[[packages]]
+name = "tmux"
+
+[[packages]]
+name = "vim-enhanced"
+
+[customizations]
+[customizations.kernel]
+append = ""
+
+[[customizations.user]]
+name = {{ baseos_name }}
+password = {{ baseos_pw }}
+key = {{ baseos_key }}
+groups = ["wheel"]
+[customizations.timezone]
+timezone = "America/New_York"
+[customizations.locale]
+[customizations.fdo]
+[customizations.ignition]
+[customizations.ignition.firstboot]
