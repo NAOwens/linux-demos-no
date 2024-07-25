@@ -33,7 +33,7 @@
 
     - name: Copy the hard-coded repos 
       ansible.builtin.copy:
-        src: /usr/share/osbuild-composer/repositories/
+        src: /usr/share/osbuild-composer/repositories/rhel-{{ ansible_distribution_version }}.json
         dest: /etc/osbuild-composer/repositories
         remote_src: true   
 
