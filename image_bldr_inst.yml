@@ -19,6 +19,12 @@
         name: weldr
         state: present
 
+    - name: Add baseos user to weldr group
+      ansible.builtin.user:
+        name: "{{ baseos_name }}"
+        groups: weldr
+        append: true
+
     - name: Install packages needed for Image Builder server
       ansible.builtin.dnf:
         name: 
