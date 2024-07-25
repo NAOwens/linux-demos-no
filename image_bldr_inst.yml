@@ -77,3 +77,8 @@
     - name: Create blueprint
       ansible.builtin.command: "composer-cli blueprints push /tmp/baseos.toml"
       changed_when: false
+
+    - name: Remove the blueprint tmp file
+      ansible.builtin.file:
+        path: /tmp/baseos.toml
+        state: absent 
