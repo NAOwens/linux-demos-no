@@ -7,6 +7,13 @@
     - vars/baseos_user.yml
 
   tasks:
+    - name: Fail the playbook if the host OS is not currently RHEL7 or RHEL8
+      ansible.builtin.fail:
+        msg: "The host {{ ansible_hostname }} is RHEL{{ ansible_distribution_major_version }} and is not supported for Image Builder "
+      when: 
+        - ansible_facts['distribution_major_version'] != "8"
+        - ansible_facts['distribution_major_version'] != "9"
+
     - name: Create weldr group
       ansible.builtin.group:
         name: weldr
