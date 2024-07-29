@@ -89,5 +89,5 @@
         enabled: true
 
     - name: Process multiple blueprint files
-      include_tasks: "image_bldr_task.yml"
+      include_tasks: "tasks/image_bldr_task.yml"
       loop: "{{ my_toml_file }}"
