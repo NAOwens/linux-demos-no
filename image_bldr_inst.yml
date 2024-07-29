@@ -88,6 +88,6 @@
         state: started
         enabled: true
 
-    - name: Block to process multiple blueprint files
+    - name: Process multiple blueprint files
       include_tasks: "image_bldr_task.yml"
       loop: "{{ my_toml_file }}"
