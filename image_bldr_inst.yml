@@ -3,6 +3,12 @@
   hosts: "{{ survey_hostname }}"
   gather_facts: true
 
+  vars:
+    my_tmp_file: /tmp/tmpfile.toml
+    my_toml_file:
+      - baseos.toml.j2
+      - satellite.toml.j2
+
   vars_files:
     - vars/baseos_user.yml
 
@@ -82,16 +88,19 @@
         state: started
         enabled: true
 
-    - name: Add Toml file used for blueprint to tmp dir
-      ansible.builtin.template:
-        src: baseos.toml.j2
-        dest: /tmp/baseos.toml
+    - name: Block to process multiple blueprint files
+      block: 
+        - name: Add Toml file used for blueprint to tmp dir
+          ansible.builtin.template:
+            src: "{{ item }}"
+            dest: "{{ my_tmp_file }}"
 
-    - name: Create blueprint
-      ansible.builtin.command: "composer-cli blueprints push /tmp/baseos.toml"
-      changed_when: false
+        - name: Create blueprint
+          ansible.builtin.command: "composer-cli blueprints push {{ my_tmp_file }}"
+          changed_when: false
 
-    - name: Remove the blueprint Toml tmp file
-      ansible.builtin.file:
-        path: /tmp/baseos.toml
-        state: absent 
+        - name: Remove the blueprint Toml tmp file
+          ansible.builtin.file:
+            path: "{{ my_tmp_file }}"
+            state: absent
+      loop: "{{ my_toml_file }}"
