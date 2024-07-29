@@ -89,18 +89,5 @@
         enabled: true
 
     - name: Block to process multiple blueprint files
-      block: 
-        - name: Add Toml file used for blueprint to tmp dir
-          ansible.builtin.template:
-            src: "{{ item }}"
-            dest: "{{ my_tmp_file }}"
-
-        - name: Create blueprint
-          ansible.builtin.command: "composer-cli blueprints push {{ my_tmp_file }}"
-          changed_when: false
-
-        - name: Remove the blueprint Toml tmp file
-          ansible.builtin.file:
-            path: "{{ my_tmp_file }}"
-            state: absent
+      include_tasks: "image_bldr_task.yml"
       loop: "{{ my_toml_file }}"
