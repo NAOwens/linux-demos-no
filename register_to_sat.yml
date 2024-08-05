@@ -29,4 +29,4 @@
     - name: If this host has not been registered to Sat then use curl command for first registration
       ansible.builtin.shell: "{{ first_ak }}"  
       when: chk_config is failed or  
-            "{{ sat_org }}" not in chk_config
+            sat_org not in chk_config
