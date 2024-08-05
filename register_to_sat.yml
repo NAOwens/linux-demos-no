@@ -30,3 +30,4 @@
       ansible.builtin.shell: "{{ first_ak }}"  
       when: chk_config is failed or  
             sat_org not in chk_config
+      ignore_errors: true
